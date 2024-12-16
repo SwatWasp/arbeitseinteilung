@@ -32,25 +32,25 @@ async function getPersonen() {
   return personen;
 }
 
-// Get movie by id
-async function getMovie(id) {
-  let movie = null;
+// Get person by id
+async function getPerson(id) {
+  let person = null;
   try {
-    const collection = db.collection("movies");
+    const collection = db.collection("personen");
     const query = { _id: new ObjectId(id) }; // filter by id
-    movie = await collection.findOne(query);
+    person = await collection.findOne(query);
 
-    if (!movie) {
-      console.log("No movie with id " + id);
+    if (!person) {
+      console.log("No person with id " + id);
       // TODO: errorhandling
     } else {
-      movie._id = movie._id.toString(); // convert ObjectId to String
+      person._id = person._id.toString(); // convert ObjectId to String
     }
   } catch (error) {
     // TODO: errorhandling
     console.log(error.message);
   }
-  return movie;
+  return person;
 }
 
 // create movie
