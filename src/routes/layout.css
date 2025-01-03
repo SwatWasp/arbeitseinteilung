@@ -1,8 +1,9 @@
 .nav {
     background-color: white;
     border-bottom: 1px solid rgba(0, 0, 0, 0.11);
-    padding: 10px;
-    padding-left: 30px;
+    padding: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 .nav-link {
@@ -12,4 +13,14 @@
 
 img {
     width: 100px;
+}
+
+.image {
+    padding-right: 50px;
+}
+
+div {
+    padding-top: 10px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
