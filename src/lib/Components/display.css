@@ -1,0 +1,19 @@
+.person-card {
+    border: 1px solid grey;
+    margin: 5px;
+    padding: 10px;
+    font-size: larger;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.type {
+    font-size: 200%;
+    font-weight: 350;
+}
+
+a {
+    color: red;
+}

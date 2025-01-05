@@ -54,8 +54,32 @@ async function getPerson(id) {
   return person;
 }
 
+// returns: id of the updated person or null, if person could not be updated
+async function updatePerson(person) {
+  try {
+    let id = person._id;
+    delete person._id; // delete the _id from the object, because the _id cannot be updated
+    const collection = db.collection("personen");
+    const query = { _id: new ObjectId(id) }; // filter by id
+    const result = await collection.updateOne(query, { $set: person });
+
+    if (result.matchedCount === 0) {
+      console.log("Keine Person mit Id " + id);
+      // TODO: errorhandling
+    } else {
+      console.log("Person it Id " + id + " wurde angepasst.");
+      return id;
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
 // export all functions so that they can be used in other files
 export default {
   getPersonen,
   getPerson,
+  updatePerson,
 };

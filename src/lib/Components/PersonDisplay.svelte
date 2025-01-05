@@ -1,30 +1,21 @@
 <script>
+    import "./display.css";
     let { person } = $props();
 </script>
 
-<div class="card">
-    <div class="card-body">
-        <div>Name: {person.vorname} {person.nachname}</div>
-        <div>Geb. {person.geburtsdatum}</div>
-        <div>Geb.: {person.riege}</div>
+<div class="person-card">
+    <div class="card-body row">
+        <div class="col-10">
+            <div class="title">
+                <a href={"/personen/" + person._id}>{person.vorname} {person.nachname}</a>
+            </div>
+            <div>Geb. {person.geburtsdatum}</div>
+            <div>{person.riege}</div>
+        </div>
+        <div class="col position-relative">
+            <div class="fs-1 position-absolute top-50 translate-middle">
+                <div class="type">{person.typ}</div>
+            </div>
+        </div>
     </div>
 </div>
-
-<style>
-    .card-body {
-        justify-content: flex-end;
-        padding: 5px;
-    }
-    .card {
-        display: flex;
-        justify-content: flex-end;
-        flex-direction: column;
-        border: 1px solid grey;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
-
-    div {
-        color:black;
-    }
-</style>
