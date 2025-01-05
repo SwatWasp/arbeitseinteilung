@@ -1,5 +1,5 @@
 <script>
-    import "./display.css";
+    import "/src/styles/display.css";
     let { person } = $props();
 </script>
 

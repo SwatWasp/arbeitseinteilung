@@ -77,9 +77,42 @@ async function updatePerson(person) {
   return null;
 }
 
+async function createPerson(person) {
+  try {
+    const collection = db.collection("personen");
+    const result = await collection.insertOne(person);
+    return result.insertedId.toString(); // convert ObjectId to String
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
+async function deletePerson(id) {
+  try {
+    const collection = db.collection("personen");
+    const query = { _id: new ObjectId(id) }; // filter by id
+    const result = await collection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      console.log("Keine Person mit Id " + id);
+    } else {
+      console.log("Person mit Id " + id + "wurde gelöscht.");
+      return id;
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
 // export all functions so that they can be used in other files
 export default {
   getPersonen,
   getPerson,
   updatePerson,
+  createPerson,
+  deletePerson,
 };

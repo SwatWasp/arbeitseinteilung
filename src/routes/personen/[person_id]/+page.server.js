@@ -17,5 +17,11 @@ export const actions = {
       bemerkungen: data.get("bemerkungen")      
     }
     await db.updatePerson(person);
-  }
+  },
+  delete: async ({ request }) => {
+    const data = await request.formData();
+
+    await db.deletePerson(data.get("id"));
+    redirect(303, "/personen");
+  },
 }

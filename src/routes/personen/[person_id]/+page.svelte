@@ -1,6 +1,6 @@
 <script>
   export let data;
-  import "./zurueck.css";
+  import "/src/styles/zurueck.css";
   let person = data.person;
 </script>
 
