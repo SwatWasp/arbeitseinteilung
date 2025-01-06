@@ -120,6 +120,7 @@
     </div>
 </div>
 <div class="row mt-5">
+    <h2>Zugeteilte Personen</h2>
     {#each personen as person}
         <div class="col-sm-6 col-md-4 col-lg-3 mb-2 gx-2">
             <PersonDisplay {person}></PersonDisplay>
