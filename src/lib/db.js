@@ -37,6 +37,7 @@ async function getPerson(id) {
   let person = null;
   let beziehungen = [];
   let einsaetze = [];
+  let offeneEinsaetze = [];
   try {
     const collection1 = db.collection("personen");
     const query1 = { _id: new ObjectId(id) };
@@ -65,13 +66,19 @@ async function getPerson(id) {
         return einsatz;
       })
     );
+    const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
+    const query4 = { _id: { $nin: excludeIds } };
+    offeneEinsaetze = await collection3.find(query4).toArray();
+    offeneEinsaetze = offeneEinsaetze.map(einsatz => {
+      einsatz._id = einsatz._id.toString();
+      return einsatz;
+    });
     }
-
   } catch (error) {
     // TODO: errorhandling
     console.log(error.message);
   }
-  return {person, einsaetze};
+  return {person, einsaetze, offeneEinsaetze};
 }
 
 // returns: id of the updated person or null, if person could not be updated
@@ -108,6 +115,7 @@ async function createPerson(person) {
   }
   return null;
 }
+
 
 async function deletePerson(id) {
   try {
@@ -249,6 +257,26 @@ async function deleteEinsatz(id) {
   return null;
 }
 
+
+//////////////////////////////////////////
+// Beziehungen
+//////////////////////////////////////////
+
+async function addPersonToEinsatz(beziehung) {
+  try {
+    beziehung.person_id = new ObjectId(beziehung.person_id);
+    beziehung.einsatz_id = new ObjectId(beziehung.einsatz_id);
+
+    const collection = db.collection("personen_einsaetze");
+    const result = await collection.insertOne(beziehung);
+    return result.insertedId.toString();
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
 // export all functions so that they can be used in other files
 export default {
   getPersonen,
@@ -260,5 +288,6 @@ export default {
   getEinsatz,
   updateEinsatz,
   createEinsatz,
-  deleteEinsatz
+  deleteEinsatz,
+  addPersonToEinsatz
 };

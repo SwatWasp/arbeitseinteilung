@@ -4,7 +4,7 @@
 </script>
 
 <div class="display-card">
-    <div class="col-10">
+    <div>
         <div class="title">
             <a href={"/einsaetze/" + einsatz._id}>{einsatz.aufgabe}</a>
         </div>
