@@ -73,6 +73,15 @@ async function getPerson(id) {
       einsatz._id = einsatz._id.toString();
       return einsatz;
     });
+    } else {
+    const collection3 = db.collection("einsaetze");
+    const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
+    const query4 = { _id: { $nin: excludeIds } };
+    offeneEinsaetze = await collection3.find(query4).toArray();
+    offeneEinsaetze = offeneEinsaetze.map(einsatz => {
+      einsatz._id = einsatz._id.toString();
+      return einsatz;
+    });
     }
   } catch (error) {
     // TODO: errorhandling
@@ -277,6 +286,26 @@ async function addPersonToEinsatz(beziehung) {
   return null;
 }
 
+async function removePersonFromEinsatz(beziehung) {
+  try {
+    beziehung.person_id = new ObjectId(beziehung.person_id);
+    beziehung.einsatz_id = new ObjectId(beziehung.einsatz_id);
+
+    const collection = db.collection("personen_einsaetze");
+    const result = await collection.deleteOne(beziehung);
+
+    if (result.deletedCount === 0) {
+      console.log("Keine Beziehung gefunden.");
+    } else {
+      console.log("Beziehung wurde gelöscht.");
+      return beziehung;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+  return null;
+}
+
 // export all functions so that they can be used in other files
 export default {
   getPersonen,
@@ -289,5 +318,6 @@ export default {
   updateEinsatz,
   createEinsatz,
   deleteEinsatz,
-  addPersonToEinsatz
+  addPersonToEinsatz,
+  removePersonFromEinsatz
 };

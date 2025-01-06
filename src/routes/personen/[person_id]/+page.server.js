@@ -27,13 +27,20 @@ export const actions = {
     await db.deletePerson(data.get("id"));
     redirect(303, "/personen");
   },
-  addToEinsatz: async ({ request }) => {
+  addToEinsatz: async ({ request, params }) => {
     const data = await request.formData();
-    console.log("FormData received:", Array.from(data.entries()));
     let beziehung = {
-      person_id: data.get("id"),
+      person_id: params.person_id,
       einsatz_id: data.get("einsatz_id"),
     };
     await db.addPersonToEinsatz(beziehung);
   },
+  removeFromEinsatz: async ({ request, params }) => {
+    const data = await request.formData();
+    let beziehung = {
+      person_id: params.person_id,
+      einsatz_id: data.get("einsatz_id"),
+    };
+    await db.removePersonFromEinsatz(beziehung);
+  }
 };

@@ -81,7 +81,7 @@
       <h4 class="text-center">{einsatz.treffpunkt}</h4>
     </div>
   </div>  
-  <div class="row mt-3">
+  <div class="row mt-5">
     {#each personen as person}
         <div class="col-sm-6 col-md-4 col-lg-3 mb-2 gx-2">
             <PersonDisplay {person}></PersonDisplay>

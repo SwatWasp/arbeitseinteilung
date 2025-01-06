@@ -2,8 +2,8 @@
   export let data;
   import "/src/styles/zurueck.css";
   import "/src/styles/bilder.css";
-  import EinsatzDisplay from "$lib/Components/EinsatzDisplay.svelte";
-    import EinsaetzeBeiPersonDisplay from "$lib/Components/EinsaetzeBeiPersonDisplay.svelte";
+  import ZugeteilteEinsaetzeDisplay from "$lib/Components/ZugeteilteEinsaetzeDisplay.svelte";
+  import WeitereEinsaetzeDisplay from "$lib/Components/WeitereEinsaetzeDisplay.svelte";
   let person = data.person;
   let einsaetze = data.einsaetze;
   let offeneEinsaetze = data.offeneEinsaetze;
@@ -62,15 +62,15 @@
   <h2>Zugeteilte Einsätze</h2>
   {#each einsaetze as einsatz}
       <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
-          <EinsatzDisplay {einsatz}></EinsatzDisplay>
+          <ZugeteilteEinsaetzeDisplay {einsatz}></ZugeteilteEinsaetzeDisplay>
       </div>
   {/each}
 </div>
-<div class="row mt-5">
+<div class="row mt-5 mb-5">
   <h2>Weitere Einsätze</h2>
   {#each offeneEinsaetze as einsatz}
       <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
-          <EinsaetzeBeiPersonDisplay {einsatz}></EinsaetzeBeiPersonDisplay>
+          <WeitereEinsaetzeDisplay {einsatz}></WeitereEinsaetzeDisplay>
       </div>
   {/each}
 </div>
