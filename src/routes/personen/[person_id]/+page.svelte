@@ -34,7 +34,12 @@
           <label for="lapvariante" class="col-form-label">LAP Variante:</label>
         </div>
         <div class="col-auto">
-          <input type="number" name="lapvariante" class="form-control" value={person.lapvariante} />
+          <input
+            type="number"
+            name="lapvariante"
+            class="form-control"
+            value={person.lapvariante}
+          />
         </div>
       </div>
       <div>
@@ -61,16 +66,16 @@
 <div class="row mt-5">
   <h2>Zugeteilte Einsätze</h2>
   {#each einsaetze as einsatz}
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
-          <ZugeteilteEinsaetzeDisplay {einsatz}></ZugeteilteEinsaetzeDisplay>
-      </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
+      <ZugeteilteEinsaetzeDisplay {einsatz}></ZugeteilteEinsaetzeDisplay>
+    </div>
   {/each}
 </div>
 <div class="row mt-5 mb-5">
   <h2>Weitere Einsätze</h2>
   {#each offeneEinsaetze as einsatz}
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
-          <WeitereEinsaetzeDisplay {einsatz}></WeitereEinsaetzeDisplay>
-      </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
+      <WeitereEinsaetzeDisplay {einsatz}></WeitereEinsaetzeDisplay>
+    </div>
   {/each}
 </div>

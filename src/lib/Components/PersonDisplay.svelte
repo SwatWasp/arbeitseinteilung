@@ -7,7 +7,9 @@
     <div class="card-body row">
         <div class="col-10">
             <div class="title">
-                <a href={"/personen/" + person._id}>{person.vorname} {person.nachname}</a>
+                <a href={"/personen/" + person._id}
+                    >{person.vorname} {person.nachname}</a
+                >
             </div>
             <div>Geb. {person.geburtsdatum}</div>
             <div>{person.riege}</div>

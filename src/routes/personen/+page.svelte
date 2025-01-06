@@ -4,6 +4,7 @@
     let { data } = $props();
     let personen = data.personen;
 </script>
+
 <h1>Personen</h1>
 <div>
     <a href="/personen/create" class="btn btn-success">Person hinzufügen</a>

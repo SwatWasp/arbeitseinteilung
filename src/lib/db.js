@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb"; // See https://www.mongodb.com/docs/drivers/node/current/quick-start/
+import { MongoClient, ObjectId } from "mongodb";
 import { DB_URI } from "$env/static/private";
 import { json } from '@sveltejs/kit';
 import { get } from "svelte/store";
@@ -6,7 +6,7 @@ import { get } from "svelte/store";
 const client = new MongoClient(DB_URI);
 
 await client.connect();
-const db = client.db("arbeitseinteilung"); // select database
+const db = client.db("arbeitseinteilung");
 
 //////////////////////////////////////////
 // Personen
@@ -20,19 +20,17 @@ async function getPersonen() {
 
     const query = {};
 
-    // Get all objects that match the query
     personen = await collection.find(query).toArray();
     personen.forEach((person) => {
-      person._id = person._id.toString(); // convert ObjectId to String
+      person._id = person._id.toString();
     });
   } catch (error) {
     console.log(error);
-    // TODO: errorhandling
   }
   return personen;
 }
 
-// Get person by id
+// Person anhand der Id anzeigen
 async function getPerson(id) {
   let person = null;
   let beziehungen = [];
@@ -45,7 +43,6 @@ async function getPerson(id) {
 
     if (!person) {
       console.log("No person with id " + id);
-      // TODO: errorhandling
     } else {
       person._id = person._id.toString();
     }
@@ -55,81 +52,78 @@ async function getPerson(id) {
     const beziehungen = await collection2.find(query2).toArray();
 
     if (beziehungen.length > 0) {
-    const collection3 = db.collection("einsaetze");
-    einsaetze = await Promise.all(
-      beziehungen.map(async (beziehung) => {
-        const query3 = { _id: beziehung.einsatz_id };
-        const einsatz = await collection3.findOne(query3);
-        if (einsatz) {
-          einsatz._id = einsatz._id.toString();
-        }
-        return einsatz;
+      const collection3 = db.collection("einsaetze");
+      einsaetze = await Promise.all(
+        beziehungen.map(async (beziehung) => {
+          const query3 = { _id: beziehung.einsatz_id };
+          const einsatz = await collection3.findOne(query3);
+          if (einsatz) {
+            einsatz._id = einsatz._id.toString();
+          }
+          return einsatz;
       })
-    );
-    const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
-    const query4 = { _id: { $nin: excludeIds } };
-    offeneEinsaetze = await collection3.find(query4).toArray();
-    offeneEinsaetze = offeneEinsaetze.map(einsatz => {
-      einsatz._id = einsatz._id.toString();
-      return einsatz;
-    });
+      );
+      const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
+      const query4 = { _id: { $nin: excludeIds } };
+      offeneEinsaetze = await collection3.find(query4).toArray();
+      offeneEinsaetze = offeneEinsaetze.map(einsatz => {
+        einsatz._id = einsatz._id.toString();
+        return einsatz;
+      });
     } else {
-    const collection3 = db.collection("einsaetze");
-    const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
-    const query4 = { _id: { $nin: excludeIds } };
-    offeneEinsaetze = await collection3.find(query4).toArray();
-    offeneEinsaetze = offeneEinsaetze.map(einsatz => {
-      einsatz._id = einsatz._id.toString();
-      return einsatz;
-    });
+      const collection3 = db.collection("einsaetze");
+      const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
+      const query4 = { _id: { $nin: excludeIds } };
+      offeneEinsaetze = await collection3.find(query4).toArray();
+      offeneEinsaetze = offeneEinsaetze.map(einsatz => {
+        einsatz._id = einsatz._id.toString();
+        return einsatz;
+      });
     }
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return {person, einsaetze, offeneEinsaetze};
 }
 
-// returns: id of the updated person or null, if person could not be updated
+// Daten einer Person updaten
 async function updatePerson(person) {
   try {
     let id = person._id;
-    delete person._id; // delete the _id from the object, because the _id cannot be updated
+    delete person._id; // _id löschen, da es nicht geändert werden kann
     const collection = db.collection("personen");
-    const query = { _id: new ObjectId(id) }; // filter by id
+    const query = { _id: new ObjectId(id) };
     const result = await collection.updateOne(query, { $set: person });
 
     if (result.matchedCount === 0) {
       console.log("Keine Person mit Id " + id);
-      // TODO: errorhandling
     } else {
       console.log("Person mit Id " + id + " wurde angepasst.");
       return id;
     }
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
 }
 
+// Person erstellen
 async function createPerson(person) {
   try {
     const collection = db.collection("personen");
     const result = await collection.insertOne(person);
-    return result.insertedId.toString(); // convert ObjectId to String
+    return result.insertedId.toString();
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
 }
 
-
+// Person löschen
 async function deletePerson(id) {
   try {
     const collection = db.collection("personen");
-    const query = { _id: new ObjectId(id) }; // filter by id
+    const query = { _id: new ObjectId(id) };
     const result = await collection.deleteOne(query);
 
     if (result.deletedCount === 0) {
@@ -139,7 +133,6 @@ async function deletePerson(id) {
       return id;
     }
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
@@ -158,19 +151,17 @@ async function getEinsaetze() {
 
     const query = {};
 
-    // Get all objects that match the query
     einsaetze = await collection.find(query).toArray();
     einsaetze.forEach((einsatz) => {
-      einsatz._id = einsatz._id.toString(); // convert ObjectId to String
+      einsatz._id = einsatz._id.toString();
     });
   } catch (error) {
     console.log(error);
-    // TODO: errorhandling
   }
   return einsaetze;
 }
 
-// Get einsatz by id
+// Einsatz anhand der Id anzeigen
 async function getEinsatz(id) {
   let einsatz = null;
   let beziehungen = [];
@@ -182,7 +173,6 @@ async function getEinsatz(id) {
 
     if (!einsatz) {
       console.log("No einsatz with id " + id);
-      // TODO: errorhandling
     } else {
       einsatz._id = einsatz._id.toString();
     }
@@ -192,65 +182,63 @@ async function getEinsatz(id) {
     const beziehungen = await collection2.find(query2).toArray();
 
     if (beziehungen.length > 0) {
-    const collection3 = db.collection("personen");
-    personen = await Promise.all(
-      beziehungen.map(async (beziehung) => {
-        const query3 = { _id: beziehung.person_id };
-        const person = await collection3.findOne(query3);
-        if (person) {
-          person._id = person._id.toString();
-        }
-        return person;
+      const collection3 = db.collection("personen");
+      personen = await Promise.all(
+        beziehungen.map(async (beziehung) => {
+          const query3 = { _id: beziehung.person_id };
+          const person = await collection3.findOne(query3);
+          if (person) {
+            person._id = person._id.toString();
+          }
+          return person;
       })
-    );
+      );
     }
 
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return {einsatz, personen};
 }
 
-// returns: id of the updated einsatz or null, if einsatz could not be updated
+// Daten eines Einsatzes updaten
 async function updateEinsatz(einsatz) {
   try {
     let id = einsatz._id;
-    delete einsatz._id; // delete the _id from the object, because the _id cannot be updated
+    delete einsatz._id; // _id löschen, da es nicht geändert werden kann
     const collection = db.collection("einsaetze");
-    const query = { _id: new ObjectId(id) }; // filter by id
+    const query = { _id: new ObjectId(id) };
     const result = await collection.updateOne(query, { $set: einsatz });
 
     if (result.matchedCount === 0) {
       console.log("Kein Einsatz mit Id " + id);
-      // TODO: errorhandling
     } else {
       console.log("Einsatz mit Id " + id + " wurde angepasst.");
       return id;
     }
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
 }
 
+// Einsatz erstellen
 async function createEinsatz(einsatz) {
   try {
     const collection = db.collection("einsaetze");
     const result = await collection.insertOne(einsatz);
-    return result.insertedId.toString(); // convert ObjectId to String
+    return result.insertedId.toString();
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
 }
 
+// Einsatz löschen
 async function deleteEinsatz(id) {
   try {
     const collection = db.collection("einsaetze");
-    const query = { _id: new ObjectId(id) }; // filter by id
+    const query = { _id: new ObjectId(id) };
     const result = await collection.deleteOne(query);
 
     if (result.deletedCount === 0) {
@@ -260,7 +248,6 @@ async function deleteEinsatz(id) {
       return id;
     }
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
@@ -271,6 +258,7 @@ async function deleteEinsatz(id) {
 // Beziehungen
 //////////////////////////////////////////
 
+// Einen Einsatz einer Person zuweisen
 async function addPersonToEinsatz(beziehung) {
   try {
     beziehung.person_id = new ObjectId(beziehung.person_id);
@@ -280,12 +268,12 @@ async function addPersonToEinsatz(beziehung) {
     const result = await collection.insertOne(beziehung);
     return result.insertedId.toString();
   } catch (error) {
-    // TODO: errorhandling
     console.log(error.message);
   }
   return null;
 }
 
+// Einen Einsatz von einer Person entfernen
 async function removePersonFromEinsatz(beziehung) {
   try {
     beziehung.person_id = new ObjectId(beziehung.person_id);
@@ -306,7 +294,7 @@ async function removePersonFromEinsatz(beziehung) {
   return null;
 }
 
-// export all functions so that they can be used in other files
+// Export aller Funktionen
 export default {
   getPersonen,
   getPerson,

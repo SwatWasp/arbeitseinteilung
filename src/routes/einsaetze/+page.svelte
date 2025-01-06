@@ -5,6 +5,7 @@
     let { data } = $props();
     let einsaetze = data.einsaetze;
 </script>
+
 <h1>Einsätze</h1>
 <div>
     <a href="/einsaetze/create" class="btn btn-success">Einsatz hinzufügen</a>

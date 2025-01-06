@@ -41,7 +41,8 @@
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Bemerkungen</label>
-        <textarea name="bemerkungen" class="form-control" type="text" rows="3"></textarea>
+        <textarea name="bemerkungen" class="form-control" type="text" rows="3"
+        ></textarea>
     </div>
     <button type="submit" class="btn btn-success">Person hinzufügen</button>
 </form>

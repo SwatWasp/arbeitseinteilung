@@ -9,7 +9,9 @@
             <div class="title">
                 <a href={"/einsaetze/" + einsatz._id}>{einsatz.aufgabe}</a>
             </div>
-            <div>{einsatz.datum}, {einsatz.zeitVon} - {einsatz.zeitBis} Uhr</div>
+            <div>
+                {einsatz.datum}, {einsatz.zeitVon} - {einsatz.zeitBis} Uhr
+            </div>
             <div>Ressort: {einsatz.ressort}</div>
         </div>
         <div class="col position-relative">
