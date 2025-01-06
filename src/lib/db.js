@@ -36,29 +36,42 @@ async function getPersonen() {
 async function getPerson(id) {
   let person = null;
   let beziehungen = [];
+  let einsaetze = [];
   try {
     const collection1 = db.collection("personen");
     const query1 = { _id: new ObjectId(id) };
-
     person = await collection1.findOne(query1);
 
     if (!person) {
       console.log("No person with id " + id);
       // TODO: errorhandling
     } else {
-      person._id = person._id.toString(); // convert ObjectId to String
+      person._id = person._id.toString();
     }
 
     const collection2 = db.collection("personen_einsaetze");
     const query2 = { person_id: new ObjectId(id) };
-    
     const beziehungen = await collection2.find(query2).toArray();
+
+    if (beziehungen.length > 0) {
+    const collection3 = db.collection("einsaetze");
+    einsaetze = await Promise.all(
+      beziehungen.map(async (beziehung) => {
+        const query3 = { _id: beziehung.einsatz_id };
+        const einsatz = await collection3.findOne(query3);
+        if (einsatz) {
+          einsatz._id = einsatz._id.toString();
+        }
+        return einsatz;
+      })
+    );
+    }
 
   } catch (error) {
     // TODO: errorhandling
     console.log(error.message);
   }
-  return {person, beziehungen};
+  return {person, einsaetze};
 }
 
 // returns: id of the updated person or null, if person could not be updated
@@ -126,8 +139,6 @@ async function getEinsaetze() {
   try {
     const collection = db.collection("einsaetze");
 
-    // You can specify a query/filter here
-    // See https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/query-document/
     const query = {};
 
     // Get all objects that match the query

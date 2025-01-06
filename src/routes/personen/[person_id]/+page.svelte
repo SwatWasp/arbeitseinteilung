@@ -2,7 +2,9 @@
   export let data;
   import "/src/styles/zurueck.css";
   import "/src/styles/bilder.css";
+  import EinsatzDisplay from "$lib/Components/EinsatzDisplay.svelte";
   let person = data.person;
+  let einsaetze = data.einsaetze;
 </script>
 
 <div class="row">
@@ -53,4 +55,12 @@
       class="bild"
     />
   </div>
+</div>
+
+<div class="row mt-3">
+  {#each einsaetze as einsatz}
+      <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">
+          <EinsatzDisplay {einsatz}></EinsatzDisplay>
+      </div>
+  {/each}
 </div>
