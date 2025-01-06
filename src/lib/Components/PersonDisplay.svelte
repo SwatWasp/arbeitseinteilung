@@ -3,7 +3,7 @@
     let { person } = $props();
 </script>
 
-<div class="person-card">
+<div class="display-card">
     <div class="card-body row">
         <div class="col-10">
             <div class="title">

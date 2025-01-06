@@ -67,7 +67,7 @@ async function updatePerson(person) {
       console.log("Keine Person mit Id " + id);
       // TODO: errorhandling
     } else {
-      console.log("Person it Id " + id + " wurde angepasst.");
+      console.log("Person mit Id " + id + " wurde angepasst.");
       return id;
     }
   } catch (error) {
@@ -108,6 +108,108 @@ async function deletePerson(id) {
   return null;
 }
 
+
+//////////////////////////////////////////
+// Einsätze
+//////////////////////////////////////////
+
+// Alle Einsätze anzeigen
+async function getEinsaetze() {
+  let einsaetze = [];
+  try {
+    const collection = db.collection("einsaetze");
+
+    // You can specify a query/filter here
+    // See https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/query-document/
+    const query = {};
+
+    // Get all objects that match the query
+    einsaetze = await collection.find(query).toArray();
+    einsaetze.forEach((einsatz) => {
+      einsatz._id = einsatz._id.toString(); // convert ObjectId to String
+    });
+  } catch (error) {
+    console.log(error);
+    // TODO: errorhandling
+  }
+  return einsaetze;
+}
+
+// Get einsatz by id
+async function getEinsatz(id) {
+  let einsatz = null;
+  try {
+    const collection = db.collection("einsaetze");
+    const query = { _id: new ObjectId(id) }; // filter by id
+    einsatz = await collection.findOne(query);
+
+    if (!einsatz) {
+      console.log("No einsatz with id " + id);
+      // TODO: errorhandling
+    } else {
+      einsatz._id = einsatz._id.toString(); // convert ObjectId to String
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return einsatz;
+}
+
+// returns: id of the updated einsatz or null, if einsatz could not be updated
+async function updateEinsatz(einsatz) {
+  try {
+    let id = einsatz._id;
+    delete einsatz._id; // delete the _id from the object, because the _id cannot be updated
+    const collection = db.collection("einsaetze");
+    const query = { _id: new ObjectId(id) }; // filter by id
+    const result = await collection.updateOne(query, { $set: einsatz });
+
+    if (result.matchedCount === 0) {
+      console.log("Kein Einsatz mit Id " + id);
+      // TODO: errorhandling
+    } else {
+      console.log("Einsatz mit Id " + id + " wurde angepasst.");
+      return id;
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
+async function createEinsatz(einsatz) {
+  try {
+    const collection = db.collection("einsaetze");
+    const result = await collection.insertOne(einsatz);
+    return result.insertedId.toString(); // convert ObjectId to String
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
+async function deleteEinsatz(id) {
+  try {
+    const collection = db.collection("einsaetze");
+    const query = { _id: new ObjectId(id) }; // filter by id
+    const result = await collection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      console.log("Kein Einsatz mit Id " + id);
+    } else {
+      console.log("Einsatz mit Id " + id + "wurde gelöscht.");
+      return id;
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
 // export all functions so that they can be used in other files
 export default {
   getPersonen,
@@ -115,4 +217,9 @@ export default {
   updatePerson,
   createPerson,
   deletePerson,
+  getEinsaetze,
+  getEinsatz,
+  updateEinsatz,
+  createEinsatz,
+  deleteEinsatz,
 };

@@ -5,7 +5,7 @@
 </script>
 
 <div class="row">
-  <div class="col-1 zurueck">
+  <div class="col-auto zurueck">
     <a href="/personen" class="btn btn-primary link">Zurück</a>
   </div>
   <div class="col">
@@ -47,7 +47,7 @@
   </div>
   <div class="col">
     <img
-      src="/images/platzhalter.jpg"
+      src="/images/platzhalterPerson.jpg"
       alt="Bild von {person.vorname} {person.nachname}"
       class="profilbild"
     />
