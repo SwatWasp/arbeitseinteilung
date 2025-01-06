@@ -2,8 +2,10 @@ import db from "$lib/db.js";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ params }) {
+  const {person, beziehungen} = await db.getPerson(params.person_id);
   return {
-    person: await db.getPerson(params.person_id),
+    person,
+    beziehungen
   };
 }
 

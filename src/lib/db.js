@@ -1,5 +1,6 @@
 import { MongoClient, ObjectId } from "mongodb"; // See https://www.mongodb.com/docs/drivers/node/current/quick-start/
 import { DB_URI } from "$env/static/private";
+import { json } from '@sveltejs/kit';
 import { get } from "svelte/store";
 
 const client = new MongoClient(DB_URI);
@@ -17,8 +18,6 @@ async function getPersonen() {
   try {
     const collection = db.collection("personen");
 
-    // You can specify a query/filter here
-    // See https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/query-document/
     const query = {};
 
     // Get all objects that match the query
@@ -36,10 +35,12 @@ async function getPersonen() {
 // Get person by id
 async function getPerson(id) {
   let person = null;
+  let beziehungen = [];
   try {
-    const collection = db.collection("personen");
-    const query = { _id: new ObjectId(id) }; // filter by id
-    person = await collection.findOne(query);
+    const collection1 = db.collection("personen");
+    const query1 = { _id: new ObjectId(id) };
+
+    person = await collection1.findOne(query1);
 
     if (!person) {
       console.log("No person with id " + id);
@@ -47,11 +48,17 @@ async function getPerson(id) {
     } else {
       person._id = person._id.toString(); // convert ObjectId to String
     }
+
+    const collection2 = db.collection("personen_einsaetze");
+    const query2 = { person_id: new ObjectId(id) };
+    
+    const beziehungen = await collection2.find(query2).toArray();
+
   } catch (error) {
     // TODO: errorhandling
     console.log(error.message);
   }
-  return person;
+  return {person, beziehungen};
 }
 
 // returns: id of the updated person or null, if person could not be updated
@@ -221,5 +228,5 @@ export default {
   getEinsatz,
   updateEinsatz,
   createEinsatz,
-  deleteEinsatz,
+  deleteEinsatz
 };
