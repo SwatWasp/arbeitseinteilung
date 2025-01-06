@@ -2,8 +2,10 @@ import db from "$lib/db.js";
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ params }) {
+  const {einsatz, personen} = await db.getEinsatz(params.einsatz_id);
   return {
-    einsatz: await db.getEinsatz(params.einsatz_id),
+    einsatz,
+    personen
   };
 }
 

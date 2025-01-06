@@ -56,7 +56,6 @@
     />
   </div>
 </div>
-
 <div class="row mt-3">
   {#each einsaetze as einsatz}
       <div class="col-sm-12 col-md-6 col-lg-3 mb-2 gx-2">

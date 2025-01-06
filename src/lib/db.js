@@ -156,22 +156,43 @@ async function getEinsaetze() {
 // Get einsatz by id
 async function getEinsatz(id) {
   let einsatz = null;
+  let beziehungen = [];
+  let personen = [];
   try {
-    const collection = db.collection("einsaetze");
-    const query = { _id: new ObjectId(id) }; // filter by id
-    einsatz = await collection.findOne(query);
+    const collection1 = db.collection("einsaetze");
+    const query1 = { _id: new ObjectId(id) };
+    einsatz = await collection1.findOne(query1);
 
     if (!einsatz) {
       console.log("No einsatz with id " + id);
       // TODO: errorhandling
     } else {
-      einsatz._id = einsatz._id.toString(); // convert ObjectId to String
+      einsatz._id = einsatz._id.toString();
     }
+
+    const collection2 = db.collection("personen_einsaetze");
+    const query2 = { einsatz_id: new ObjectId(id) };
+    const beziehungen = await collection2.find(query2).toArray();
+
+    if (beziehungen.length > 0) {
+    const collection3 = db.collection("personen");
+    personen = await Promise.all(
+      beziehungen.map(async (beziehung) => {
+        const query3 = { _id: beziehung.person_id };
+        const person = await collection3.findOne(query3);
+        if (person) {
+          person._id = person._id.toString();
+        }
+        return person;
+      })
+    );
+    }
+
   } catch (error) {
     // TODO: errorhandling
     console.log(error.message);
   }
-  return einsatz;
+  return {einsatz, personen};
 }
 
 // returns: id of the updated einsatz or null, if einsatz could not be updated

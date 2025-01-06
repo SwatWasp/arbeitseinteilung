@@ -8,7 +8,6 @@
 <div>
     <a href="/personen/create" class="btn btn-success">Person hinzufügen</a>
 </div>
-
 <div class="row mt-3">
     {#each personen as person}
         <div class="col-sm-6 col-md-4 col-lg-3 mb-2 gx-2">

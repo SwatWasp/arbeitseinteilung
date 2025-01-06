@@ -2,8 +2,10 @@
     export let data;
     import "/src/styles/zurueck.css";
     import "/src/styles/bilder.css";
+    import PersonDisplay from "$lib/Components/PersonDisplay.svelte";
     let einsatz = data.einsatz;
-  </script>
+    let personen = data.personen;
+</script>
   
   <div class="row">
     <div class="col-auto zurueck">
@@ -79,3 +81,10 @@
       <h4 class="text-center">{einsatz.treffpunkt}</h4>
     </div>
   </div>  
+  <div class="row mt-3">
+    {#each personen as person}
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-2 gx-2">
+            <PersonDisplay {person}></PersonDisplay>
+        </div>
+    {/each}
+</div>
