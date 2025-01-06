@@ -1,6 +1,7 @@
 <script>
     export let data;
     import "/src/styles/zurueck.css";
+    import "/src/styles/bilder.css";
     let einsatz = data.einsatz;
   </script>
   
@@ -73,20 +74,8 @@
       <img
         src="/images/platzhalterStandort.png"
         alt="Einsatzstandort"
-        class="profilbild"
+        class="bild"
       />
       <h4 class="text-center">{einsatz.treffpunkt}</h4>
     </div>
-  </div>
-  
-  <style>
-    .profilbild {
-      border-style: solid;
-      border-width: 2px;
-      border-color: gray;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-  </style>
-  
+  </div>  

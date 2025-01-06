@@ -1,0 +1,8 @@
+.bild {
+    border-style: solid;
+    border-width: 2px;
+    border-color: gray;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }

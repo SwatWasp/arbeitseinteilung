@@ -16,7 +16,7 @@ export const actions = {
       aufgabe: data.get("aufgabe"),
       datum: data.get("datum"),
       zeitVon: data.get("zeitVon"),
-      ZeitBis: data.get("zeitBis"),
+      zeitBis: data.get("zeitBis"),
       ressort: data.get("ressort"),
       anzahl: data.get("anzahl"),
       typ: data.get("typ")

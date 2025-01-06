@@ -1,6 +1,7 @@
 <script>
   export let data;
   import "/src/styles/zurueck.css";
+  import "/src/styles/bilder.css";
   let person = data.person;
 </script>
 
@@ -49,18 +50,7 @@
     <img
       src="/images/platzhalterPerson.jpg"
       alt="Bild von {person.vorname} {person.nachname}"
-      class="profilbild"
+      class="bild"
     />
   </div>
 </div>
-
-<style>
-  .profilbild {
-    border-style: solid;
-    border-width: 2px;
-    border-color: gray;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-</style>
