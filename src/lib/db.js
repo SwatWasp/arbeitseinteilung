@@ -51,35 +51,25 @@ async function getPerson(id) {
     const query2 = { person_id: new ObjectId(id) };
     const beziehungen = await collection2.find(query2).toArray();
 
-    if (beziehungen.length > 0) {
-      const collection3 = db.collection("einsaetze");
-      einsaetze = await Promise.all(
-        beziehungen.map(async (beziehung) => {
-          const query3 = { _id: beziehung.einsatz_id };
-          const einsatz = await collection3.findOne(query3);
-          if (einsatz) {
-            einsatz._id = einsatz._id.toString();
-          }
-          return einsatz;
+    const collection3 = db.collection("einsaetze");
+    einsaetze = await Promise.all(
+      beziehungen.map(async (beziehung) => {
+        const query3 = { _id: beziehung.einsatz_id };
+        const einsatz = await collection3.findOne(query3);
+        if (einsatz) {
+          einsatz._id = einsatz._id.toString();
+        }
+        return einsatz;
       })
-      );
-      const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
-      const query4 = { _id: { $nin: excludeIds } };
-      offeneEinsaetze = await collection3.find(query4).toArray();
-      offeneEinsaetze = offeneEinsaetze.map(einsatz => {
-        einsatz._id = einsatz._id.toString();
-        return einsatz;
-      });
-    } else {
-      const collection3 = db.collection("einsaetze");
-      const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
-      const query4 = { _id: { $nin: excludeIds } };
-      offeneEinsaetze = await collection3.find(query4).toArray();
-      offeneEinsaetze = offeneEinsaetze.map(einsatz => {
-        einsatz._id = einsatz._id.toString();
-        return einsatz;
-      });
-    }
+    );
+    
+    const excludeIds = beziehungen.map(beziehung => beziehung.einsatz_id);
+    const query4 = { _id: { $nin: excludeIds } };
+    offeneEinsaetze = await collection3.find(query4).toArray();
+    offeneEinsaetze = offeneEinsaetze.map(einsatz => {
+      einsatz._id = einsatz._id.toString();
+      return einsatz;
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -181,20 +171,18 @@ async function getEinsatz(id) {
     const query2 = { einsatz_id: new ObjectId(id) };
     const beziehungen = await collection2.find(query2).toArray();
 
-    if (beziehungen.length > 0) {
-      const collection3 = db.collection("personen");
-      personen = await Promise.all(
-        beziehungen.map(async (beziehung) => {
-          const query3 = { _id: beziehung.person_id };
-          const person = await collection3.findOne(query3);
-          if (person) {
-            person._id = person._id.toString();
-          }
-          return person;
+    const collection3 = db.collection("personen");
+    personen = await Promise.all(
+      beziehungen.map(async (beziehung) => {
+        const query3 = { _id: beziehung.person_id };
+        const person = await collection3.findOne(query3);
+        if (person) {
+          person._id = person._id.toString();
+        }
+        return person;
       })
-      );
-    }
-
+    );
+    
   } catch (error) {
     console.log(error.message);
   }
