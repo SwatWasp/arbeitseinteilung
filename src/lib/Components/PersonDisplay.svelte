@@ -6,8 +6,8 @@
 <div class="display-card">
     <div class="card-body row">
         <div class="col-10">
-            <div class="title">
-                <a href={"/personen/" + person._id}
+            <div>
+                <a class="title" href={"/personen/" + person._id}
                     >{person.vorname} {person.nachname}</a
                 >
             </div>

@@ -5,8 +5,10 @@
 
 <div class="display-card">
     <div>
-        <div class="title">
-            <a href={"/einsaetze/" + einsatz._id}>{einsatz.aufgabe}</a>
+        <div>
+            <a class="title" href={"/einsaetze/" + einsatz._id}
+                >{einsatz.aufgabe}</a
+            >
         </div>
         <div>{einsatz.datum}, {einsatz.zeitVon} - {einsatz.zeitBis} Uhr</div>
         <div>Ressort: {einsatz.ressort}</div>

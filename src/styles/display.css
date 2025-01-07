@@ -7,13 +7,10 @@
 
 .title {
     font-weight: bold;
+    color: red;
 }
 
 .type {
     font-size: 200%;
     font-weight: 350;
-}
-
-a {
-    color: red;
 }
